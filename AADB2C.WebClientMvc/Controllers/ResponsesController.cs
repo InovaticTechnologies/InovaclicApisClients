@@ -24,8 +24,9 @@ namespace AADB2C.WebClientMvc.Controllers
         
         public async Task<ActionResult> Index()
         {
-            
 
+            try
+            {
                 var bootstrapContext = ClaimsPrincipal.Current.Identities.First().BootstrapContext as System.IdentityModel.Tokens.BootstrapContext;
 
                 HttpClient client = new HttpClient();
@@ -34,7 +35,7 @@ namespace AADB2C.WebClientMvc.Controllers
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bootstrapContext.Token);
 
 
-            HttpResponseMessage response;
+                HttpResponseMessage response;
 
                 byte[] byteData = Encoding.UTF8.GetBytes("{\"callbackCompleted\": \"string\"," +
                     "\"callbackManual\": \"string\"," +
@@ -50,14 +51,16 @@ namespace AADB2C.WebClientMvc.Controllers
                     response = await client.PostAsync(serviceUrl, content);
                 }
 
-                
+                var res = new ResponseModel();
+                res.StatusCode = response.StatusCode.ToString();
 
-                    var res = new ResponseModel();
-                    res.StatusCode = response.StatusCode.ToString();
+                return View(res);
 
-                    return View(res);
-                
-            
+            }
+            catch (Exception ex)
+            {
+                return new RedirectResult("/Error?message=An Error Occurred Reading Responses : " + ex.Message);
+            }
         }
 
         
