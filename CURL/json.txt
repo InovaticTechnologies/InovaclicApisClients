@@ -1,0 +1,13 @@
+{
+  "callbackCompleted": "string",
+  "callbackManual": "string",
+  "files": [
+    {
+      "fileName": "string",
+      "data": "string",
+      "cloture": "string",
+      "siren": "string",
+      "externalId": "string"
+    }
+  ]
+}
